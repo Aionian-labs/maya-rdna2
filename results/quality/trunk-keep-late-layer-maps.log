@@ -1,0 +1,10 @@
+[exact (writes the reference)] map=-
+    SCORE 999 tokens: nll 1.84651 ppl 6.3377 top1 60.16% | 127.3 ms/token | cpu lane 41549 experts, vram hit 89.69%   (run 368 s)
+[P1: all to 22, keep 3 on 23-29, 1 on 30-44] map=8888888888888888888888833333331111111111111118
+    SCORE 999 tokens: nll 1.85125 ppl 6.3678 top1 60.46% | vs ref: KL 0.017082 (max 0.6556), same top token 95.60% | 103.3 ms/token | cpu lane 25227 experts, vram hit 93.74%   (run 336 s)
+[P2: all to 16, 5 on 17-22, 2 on 23-29, 1 on 30-44] map=8888888888888888855555522222221111111111111118
+    SCORE 999 tokens: nll 1.85731 ppl 6.4065 top1 60.66% | vs ref: KL 0.032462 (max 0.6805), same top token 90.99% | 100.8 ms/token | cpu lane 22996 experts, vram hit 94.29%   (run 335 s)
+[P3: all to 9, 6 on 10-16, 3 on 17-23, 1 on 24-44] map=8888888888666666633333331111111111111111111118
+    SCORE 999 tokens: nll 1.88091 ppl 6.5595 top1 59.26% | vs ref: KL 0.055775 (max 0.9299), same top token 89.79% | 96.3 ms/token | cpu lane 19971 experts, vram hit 95.04%   (run 329 s)
+[P4: all to 22, keep 1 on 23-44] map=8888888888888888888888811111111111111111111118
+    SCORE 999 tokens: nll 1.84926 ppl 6.3551 top1 60.66% | vs ref: KL 0.021180 (max 0.5388), same top token 93.69% | 102.1 ms/token | cpu lane 24241 experts, vram hit 93.98%   (run 336 s)

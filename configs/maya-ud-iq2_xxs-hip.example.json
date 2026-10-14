@@ -1,0 +1,50 @@
+{
+ "exe": "<MAYA_HOME>/src/build-hip/strata",
+ "args": [
+  "--glm-pack",
+  "<MAYA_MODELS>/Huihui-UD-IQ2_XXS/pack",
+  "--max-context",
+  "131072",
+  "--prefill",
+  "auto"
+ ],
+ "cwd": "<MAYA_HOME>/src",
+ "tokenizer": "<MAYA_MODELS>/Huihui-UD-IQ2_XXS/pack/tokenizer",
+ "model_name": "glm-5.3-flash",
+ "gpu": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "sampling": {
+  "temperature": 1.0,
+  "top_p": 0.95
+ },
+ "reasoning_effort": "high",
+ "lib_dirs": [
+  "/opt/rocm/lib"
+ ],
+ "port": 8099,
+ "backend": "hip",
+ "env": {
+  "STRATA_GLM_RESERVE_MB": "384",
+  "STRATA_GLM_RAM_HEADROOM_GB": "10",
+  "STRATA_GLM_TIMING": "1",
+  "STRATA_GLM_POOL_STATS": "1",
+  "STRATA_GLM_PCIE_SHARE": "0",
+  "STRATA_GLM_CPU_LANE": "3",
+  "STRATA_GLM_MTP_KEEP": "0",
+  "STRATA_GLM_TRUNK_KEEP_MAP": "8888888888444444422222221111111111111111111118"
+ },
+ "log": "<MAYA_HOME>/src/maya-ud-iq2_xxs-hip.log",
+ "installer": {
+  "models_dir": "<MAYA_MODELS>",
+  "quant": "UD-IQ2_XXS",
+  "gguf": "<MAYA_MODELS>/Huihui-UD-IQ2_XXS/GLM-5.3-Flash-UD-IQ2_XXS-00001-of-00004.gguf",
+  "gguf_dir": "<MAYA_MODELS>/Huihui-UD-IQ2_XXS",
+  "written": "2026-10-13 04:50"
+ }
+}

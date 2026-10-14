@@ -1,0 +1,30 @@
+From 76420ace7b6c807e9414ba4d8cc7a5461b7e4ac2 Mon Sep 17 00:00:00 2001
+From: Claude Opus 5.5 <noreply@anthropic.com>
+Date: Mon, 12 Oct 2026 03:37:49 +0000
+Subject: [PATCH 5/6] CMake: link hip_expert_cache_staging against
+ strata_prefill
+
+With the full test suite enabled the target failed to link: strata_engine's
+glm_prefill.cu references strata::prefill::Gemm, which lives in strata_prefill.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index dbf9062..aee5506 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -366,7 +366,7 @@ if(STRATA_ENABLE_CUDA OR STRATA_ENABLE_HIP)
+     add_test(NAME glm_mv_parity COMMAND glm_mv_bench --parity-only)
+     set_tests_properties(glm_mv_parity PROPERTIES TIMEOUT 120)
+     add_executable(hip_expert_cache_staging tests/hip/expert_cache_staging.cpp)
+-    target_link_libraries(hip_expert_cache_staging PRIVATE strata_engine)
++    target_link_libraries(hip_expert_cache_staging PRIVATE strata_engine strata_prefill)
+     add_test(NAME hip_expert_cache_staging COMMAND hip_expert_cache_staging)
+     list(APPEND _strata_hip_tests hip_expert_cache_staging)
+     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/hip/intrinsics.cpp")
+-- 
+2.34.1
+

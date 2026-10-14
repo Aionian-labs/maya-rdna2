@@ -1,0 +1,30 @@
+From 476a6f1d28ec5b95687039674a21bff384e8a491 Mon Sep 17 00:00:00 2001
+From: Claude Opus 5.5 <noreply@anthropic.com>
+Date: Sun, 11 Oct 2026 23:21:04 +0000
+Subject: [PATCH 2/6] maya.py: compile the HIP engine only for the chosen
+ cards' architectures
+
+Building every kernel for all of HIP_ARCHS multiplies compile time by four on
+this 4-core host for architectures that are not installed here.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ maya.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/maya.py b/maya.py
+index b9de90b..b50c614 100755
+--- a/maya.py
++++ b/maya.py
+@@ -539,7 +539,7 @@ def check_hip_pc(a, installed=False) -> dict:
+     elif any(hip_unified_memory(g) for g in chosen):
+         ok("APU / unified memory: the engine sizes the GPU expert pool from available system RAM")
+     select_build_backend("hip")
+-    return {"backend": "hip", "gpus": chosen, "archs": list(HIP_ARCHS), "rocm": str(root),
++    return {"backend": "hip", "gpus": chosen, "archs": sorted({g["arch"] for g in chosen}), "rocm": str(root),
+             **({"rocm_bin": str(bindir)} if WIN else {})}
+ 
+ 
+-- 
+2.34.1
+

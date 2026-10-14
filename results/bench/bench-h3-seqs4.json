@@ -1,0 +1,144 @@
+{
+ "label": "h3-seqs4",
+ "started": "2026-10-12 21:51:43",
+ "runs": [
+  {
+   "kind": "warmup",
+   "wall_s": 5.9,
+   "prompt_tokens": 19,
+   "completion_tokens": 64,
+   "prompt_tok_s": 10.8,
+   "answer_tok_s": 15.6,
+   "draft_n": 62,
+   "draft_accepted": 58,
+   "finish": "stop",
+   "glm_stat": "",
+   "memory": {
+    "vram_gib": [
+     11.77,
+     11.75
+    ],
+    "strata_rss_gib": 53.14,
+    "ram_used_mib": 2745,
+    "ram_shared_mib": 48900,
+    "ram_available_mib": 11877
+   },
+   "text_head": "Here's \"hello\" in five languages:\n\n1. **English** \u2013 Hello\n2. **Spanish** \u2013 Hola\n3. **French** \u2013 Bonjour\n4. **Japanese** \u2013 \u3053\u3093\u306b\u3061\u306f (Konnichiwa)\n5. **Arabic** \u2013 \u0645\u0631\u062d"
+  },
+  {
+   "kind": "answer500",
+   "wall_s": 40.3,
+   "prompt_tokens": 43,
+   "completion_tokens": 500,
+   "prompt_tok_s": 6.2,
+   "answer_tok_s": 15.0,
+   "draft_n": 498,
+   "draft_accepted": 432,
+   "finish": "length",
+   "glm_stat": "",
+   "memory": {
+    "vram_gib": [
+     11.86,
+     11.82
+    ],
+    "strata_rss_gib": 53.62,
+    "ram_used_mib": 3047,
+    "ram_shared_mib": 49050,
+    "ram_available_mib": 11424
+   },
+   "text_head": "# CSV Parser Function\n\n```python\nimport csv\nfrom pathlib import Path\nfrom typing import Any\n\n\ndef parse_csv(file_path: str | Path) -> list[dict[str, Any]]:\n    "
+  },
+  {
+   "kind": "answer500",
+   "wall_s": 34.3,
+   "prompt_tokens": 33,
+   "completion_tokens": 500,
+   "prompt_tok_s": 6.8,
+   "answer_tok_s": 17.0,
+   "draft_n": 498,
+   "draft_accepted": 424,
+   "finish": "length",
+   "glm_stat": "",
+   "memory": {
+    "vram_gib": [
+     11.93,
+     11.86
+    ],
+    "strata_rss_gib": 53.64,
+    "ram_used_mib": 3021,
+    "ram_shared_mib": 49050,
+    "ram_available_mib": 11451
+   },
+   "text_head": "# Photosynthesis: A Step-by-Step Guide\n\nPhotosynthesis is the process plants, algae, and some bacteria use to convert light energy into chemical energy (food). "
+  },
+  {
+   "kind": "answer500",
+   "wall_s": 38.5,
+   "prompt_tokens": 35,
+   "completion_tokens": 500,
+   "prompt_tok_s": 6.9,
+   "answer_tok_s": 15.0,
+   "draft_n": 498,
+   "draft_accepted": 463,
+   "finish": "length",
+   "glm_stat": "",
+   "memory": {
+    "vram_gib": [
+     11.97,
+     11.9
+    ],
+    "strata_rss_gib": 53.65,
+    "ram_used_mib": 3052,
+    "ram_shared_mib": 49050,
+    "ram_available_mib": 11420
+   },
+   "text_head": "# Bouncing Ball Animation\n\nHere's a complete HTML page with a canvas-based bouncing ball animation:\n\n```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta c"
+  },
+  {
+   "kind": "prompt4k",
+   "wall_s": 152.6,
+   "prompt_tokens": 4384,
+   "completion_tokens": 48,
+   "prompt_tok_s": 32.0,
+   "answer_tok_s": 3.1,
+   "draft_n": 46,
+   "draft_accepted": 37,
+   "finish": "length",
+   "glm_stat": "",
+   "memory": {
+    "vram_gib": [
+     11.98,
+     11.91
+    ],
+    "strata_rss_gib": 55.5,
+    "ram_used_mib": 3812,
+    "ram_shared_mib": 50134,
+    "ram_available_mib": 9574
+   },
+   "text_head": "Project Maya is an open-source engine and server that runs the 321-billion-parameter GLM-5.3-Flash model locally on consumer GPUs (with expert weights tiered ac"
+  },
+  {
+   "kind": "after_prompt300",
+   "wall_s": 19.4,
+   "prompt_tokens": 28,
+   "completion_tokens": 300,
+   "prompt_tok_s": 10.7,
+   "answer_tok_s": 17.9,
+   "draft_n": 298,
+   "draft_accepted": 239,
+   "finish": "length",
+   "glm_stat": "",
+   "memory": {
+    "vram_gib": [
+     11.98,
+     11.91
+    ],
+    "strata_rss_gib": 55.5,
+    "ram_used_mib": 3813,
+    "ram_shared_mib": 50134,
+    "ram_available_mib": 9573
+   },
+   "text_head": "# How a Four-Stroke Petrol Engine Works\n\nA four-stroke engine completes one full power cycle in four strokes of the piston (two crankshaft revolutions). Here's "
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+From 662e04f9b633d0118aafc606866591508945edef Mon Sep 17 00:00:00 2001
+From: Claude Opus 5.5 <noreply@anthropic.com>
+Date: Sun, 11 Oct 2026 23:21:04 +0000
+Subject: [PATCH 1/6] maya.py: accept gfx1031 (RX 6700 XT) in the HIP installer
+
+cmake/hip_backend.cmake already lists gfx1031 as buildable-but-unvalidated, but
+the installer's GPU check rejected the card before a build could be tried.
+Experiment on 2x RX 6700 XT with a system ROCm that ships gfx1031 kernels.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ maya.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/maya.py b/maya.py
+index 107ce66..b9de90b 100755
+--- a/maya.py
++++ b/maya.py
+@@ -76,7 +76,7 @@ VEXE = VBUILD / "bin" / ("strata-vision.exe" if WIN else "strata-vision")  # the
+ VSTAMP = VBUILD / "MAYA-BUILD.json"
+ MIN_CC = 70                                        # Volta (V100) and newer (the GLM path; see arch_setting)
+ MAX_GPUS = 16                                      # the layer split's parts at most (glm_model.hpp, kMaxParts)
+-HIP_ARCHS = ("gfx1100", "gfx1201", "gfx1151")        # Maya also supports Strix Halo (unified memory)
++HIP_ARCHS = ("gfx1100", "gfx1201", "gfx1151", "gfx1031")       # Maya also supports Strix Halo (unified memory)
+ PY_PACKAGES = list(S.PY_PACKAGES)                  # (pillow: pictures in formats other than JPEG/PNG/BMP/GIF)
+ CONTEXTS = [8192, 32768, 65536, 131072]
+ DEFAULT_CONTEXT = 32768
+-- 
+2.34.1
+

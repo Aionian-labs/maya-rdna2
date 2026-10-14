@@ -1,0 +1,31 @@
+From 6000cd02534f3061e9eb05394e91598b6b67c10d Mon Sep 17 00:00:00 2001
+From: Claude Opus 5.5 <noreply@anthropic.com>
+Date: Mon, 12 Oct 2026 03:32:15 +0000
+Subject: [PATCH 4/6] glm_batch.cu: fix the string literal broken in the
+ gfx10xx rocWMMA guard
+
+The previous commit's stub message was written with a raw newline inside the
+literal, which does not compile.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ src/kernels/cuda/glm_batch.cu | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/kernels/cuda/glm_batch.cu b/src/kernels/cuda/glm_batch.cu
+index 8c71e8b..1844848 100644
+--- a/src/kernels/cuda/glm_batch.cu
++++ b/src/kernels/cuda/glm_batch.cu
+@@ -2013,8 +2013,7 @@ void mla_attn_f16q(const uint16_t* q16, const uint16_t* lat, const int* cells, c
+ #if defined(STRATA_HIP_NO_WMMA)
+     (void) q16; (void) lat; (void) cells; (void) n_sel; (void) n_sel_max; (void) n_head; (void) kv_lora;
+     (void) scale; (void) T; (void) ctx; (void) s; (void) lat_q8;
+-    std::fprintf(stderr, "glm_batch mla_attn_f16q: this build has no rocWMMA kernel (gfx10xx); use the F32 path
+-");
++    std::fprintf(stderr, "glm_batch mla_attn_f16q: this build has no rocWMMA kernel (gfx10xx); use the F32 path\n");
+     std::abort();
+ #else
+     if (T <= 0) return;
+-- 
+2.34.1
+

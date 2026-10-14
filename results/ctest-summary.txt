@@ -1,0 +1,57 @@
+ 1/56 Test  #1: gguf_reader_test .................   Passed    0.00 sec
+ 2/56 Test  #2: file_expert_source_test ..........   Passed    0.32 sec
+ 3/56 Test  #3: hip_expert_kernel_parity .........   Passed    2.20 sec
+ 4/56 Test  #4: glm_mv_parity ....................   Passed    3.89 sec
+ 5/56 Test  #5: hip_expert_cache_staging .........***Not Run   0.00 sec
+ 6/56 Test  #6: hip_intrinsics ...................   Passed    0.18 sec
+ 7/56 Test  #7: hip_handoff ......................   Passed    0.22 sec
+ 8/56 Test  #8: hip_glm_handoff ..................   Passed    0.27 sec
+ 9/56 Test  #9: hip_glm_prefill_attention ........   Passed    0.17 sec
+10/56 Test #10: hip_native_qsa_score .............   Passed    0.15 sec
+11/56 Test #11: hip_prefill_native_batch .........***Failed    0.36 sec
+12/56 Test #12: hip_prefill_hipblaslt_gemm .......***Skipped   0.13 sec
+13/56 Test #13: dequant_s2_parity ................   Passed    0.29 sec
+14/56 Test #14: s2_gemv_parity ...................   Passed    0.17 sec
+15/56 Test #15: iq1_s_parity .....................   Passed    0.18 sec
+16/56 Test #16: shared_expert_parity .............   Passed    0.18 sec
+17/56 Test #17: gr_parity ........................   Passed    0.42 sec
+18/56 Test #18: glm_hc_parity ....................   Passed    0.23 sec
+19/56 Test #19: router_sigmoid_parity ............   Passed    0.14 sec
+20/56 Test #20: glm_kda_parity ...................   Passed    0.17 sec
+21/56 Test #21: glm_ffn_parity ...................   Passed    0.15 sec
+22/56 Test #22: glm_dsa_parity ...................   Passed    0.14 sec
+23/56 Test #23: glm_layer_parity .................   Passed    0.21 sec
+24/56 Test #24: glm_model_test ...................   Passed    0.82 sec
+25/56 Test #25: glm_memory_test ..................   Passed    0.00 sec
+26/56 Test #26: glm_model_big_gen ................***Failed    0.10 sec
+27/56 Test #27: glm_model_big_test ...............***Not Run   0.00 sec
+28/56 Test #28: gdn_parity .......................   Passed    0.26 sec
+29/56 Test #29: s2_gemv_q8_parity ................   Passed    0.15 sec
+30/56 Test #30: sampler_parity ...................   Passed    0.30 sec
+31/56 Test #31: rope_parity ......................   Passed    0.16 sec
+32/56 Test #32: quantize_act_parity ..............   Passed    0.24 sec
+33/56 Test #33: router_top10_parity ..............   Passed    0.16 sec
+34/56 Test #34: s_gemv_parity ....................   Passed    0.19 sec
+35/56 Test #35: elementwise_parity ...............   Passed    0.19 sec
+36/56 Test #36: bf16_gemv_parity .................   Passed    0.37 sec
+37/56 Test #37: s_gemv_q8k_parity ................   Passed    0.17 sec
+38/56 Test #38: qsa_parity .......................   Passed    1.02 sec
+39/56 Test #39: kv_q8_parity .....................   Passed    0.26 sec
+40/56 Test #40: kv_stream_parity .................   Passed   12.34 sec
+41/56 Test #41: kv_hybrid_parity .................   Passed    0.46 sec
+42/56 Test #42: kv_q4_parity .....................   Passed    0.20 sec
+43/56 Test #43: cvec_parity ......................   Passed    0.31 sec
+44/56 Test #44: ple_reader_selftest ..............   Passed    5.99 sec
+45/56 Test #45: hip_device_selftest ..............   Passed    0.16 sec
+46/56 Test #46: suffix_drafter_test ..............   Passed    0.11 sec
+47/56 Test #47: controller_test ..................   Passed    0.00 sec
+48/56 Test #48: draft_policy_test ................   Passed    0.00 sec
+49/56 Test #49: conv_cache_test ..................   Passed    0.00 sec
+50/56 Test #50: native_split_test ................   Passed    0.00 sec
+51/56 Test #51: hip_prefill_mmq_parity ...........   Passed    0.95 sec
+52/56 Test #52: expert_multi_test ................***Failed    0.00 sec
+53/56 Test #53: expert_parity ....................   Passed    0.00 sec
+54/56 Test #54: pool_test ........................   Passed    0.00 sec
+55/56 Test #55: pool_stress ......................   Passed    0.00 sec
+56/56 Test #56: direct_file_async_test ...........   Passed    0.01 sec
+91% tests passed, 5 tests failed out of 56

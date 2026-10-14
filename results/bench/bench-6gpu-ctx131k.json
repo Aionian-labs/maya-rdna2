@@ -1,0 +1,144 @@
+{
+ "label": "6gpu-ctx131k",
+ "started": "2026-10-12 16:50:31",
+ "runs": [
+  {
+   "kind": "warmup",
+   "wall_s": 10.3,
+   "prompt_tokens": 19,
+   "completion_tokens": 64,
+   "prompt_tok_s": 7.0,
+   "answer_tok_s": 8.5,
+   "draft_n": 62,
+   "draft_accepted": 59,
+   "finish": "stop",
+   "glm_stat": "glm stat: decode 117.94 ms/tok (8.48 tok/s) | vram hit 86.36% | ram fetches 0.16/tok | disk 0.00 reads/tok in 0.02 waits/tok, 0.00 ms/tok | promotions 0.17/tok | cpu lane 47.44/tok in 119.52 ms/tok | prompt 142.5 ms/tok | vram 8416/8551 ram 3961/5963",
+   "memory": {
+    "vram_gib": [
+     11.13,
+     11.12
+    ],
+    "strata_rss_gib": 55.59,
+    "ram_used_mib": 2741,
+    "ram_shared_mib": 51414,
+    "ram_available_mib": 9360
+   },
+   "text_head": "Here's \"hello\" in five languages:\n\n1. **English** \u2013 Hello\n2. **Spanish** \u2013 Hola\n3. **French** \u2013 Bonjour\n4. **Japanese** \u2013 \u3053\u3093\u306b\u3061\u306f (Konnichiwa)\n5. **Arabic** \u2013 \u0645\u0631\u062d"
+  },
+  {
+   "kind": "answer500",
+   "wall_s": 64.9,
+   "prompt_tokens": 43,
+   "completion_tokens": 500,
+   "prompt_tok_s": 6.2,
+   "answer_tok_s": 8.6,
+   "draft_n": 498,
+   "draft_accepted": 440,
+   "finish": "length",
+   "glm_stat": "glm stat: decode 115.76 ms/tok (8.64 tok/s) | vram hit 87.70% | ram fetches 0.35/tok | disk 0.00 reads/tok in 0.00 waits/tok, 0.00 ms/tok | promotions 0.35/tok | cpu lane 44.30/tok in 112.30 ms/tok | prompt 162.6 ms/tok | vram 8420/8551 ram 3962/5963",
+   "memory": {
+    "vram_gib": [
+     11.15,
+     11.14
+    ],
+    "strata_rss_gib": 56.07,
+    "ram_used_mib": 3045,
+    "ram_shared_mib": 51565,
+    "ram_available_mib": 8906
+   },
+   "text_head": "# CSV Parser Function\n\n```python\nimport csv\nfrom typing import Any\n\n\ndef parse_csv(file_path: str) -> list[dict[str, Any]]:\n    \"\"\"\n    Parse a CSV file into a "
+  },
+  {
+   "kind": "answer500",
+   "wall_s": 51.4,
+   "prompt_tokens": 33,
+   "completion_tokens": 500,
+   "prompt_tok_s": 6.8,
+   "answer_tok_s": 10.7,
+   "draft_n": 498,
+   "draft_accepted": 438,
+   "finish": "length",
+   "glm_stat": "glm stat: decode 93.09 ms/tok (10.74 tok/s) | vram hit 90.55% | ram fetches 0.35/tok | disk 0.00 reads/tok in 0.00 waits/tok, 0.00 ms/tok | promotions 0.35/tok | cpu lane 34.02/tok in 83.18 ms/tok | prompt 147.6 ms/tok | vram 8421/8551 ram 3961/5963",
+   "memory": {
+    "vram_gib": [
+     11.15,
+     11.14
+    ],
+    "strata_rss_gib": 56.09,
+    "ram_used_mib": 3047,
+    "ram_shared_mib": 51565,
+    "ram_available_mib": 8904
+   },
+   "text_head": "# Photosynthesis: A Step-by-Step Guide\n\nPhotosynthesis is the process plants, algae, and some bacteria use to convert light energy into chemical energy (food). "
+  },
+  {
+   "kind": "answer500",
+   "wall_s": 66.4,
+   "prompt_tokens": 35,
+   "completion_tokens": 500,
+   "prompt_tok_s": 6.8,
+   "answer_tok_s": 8.2,
+   "draft_n": 498,
+   "draft_accepted": 482,
+   "finish": "length",
+   "glm_stat": "glm stat: decode 122.44 ms/tok (8.17 tok/s) | vram hit 84.99% | ram fetches 0.37/tok | disk 0.00 reads/tok in 0.00 waits/tok, 0.00 ms/tok | promotions 0.37/tok | cpu lane 52.02/tok in 135.07 ms/tok | prompt 147.6 ms/tok | vram 8421/8551 ram 3961/5963",
+   "memory": {
+    "vram_gib": [
+     11.15,
+     11.14
+    ],
+    "strata_rss_gib": 56.1,
+    "ram_used_mib": 3038,
+    "ram_shared_mib": 51565,
+    "ram_available_mib": 8912
+   },
+   "text_head": "# Bouncing Ball Animation\n\nHere's a complete HTML page with a canvas-based bouncing ball animation:\n\n```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta c"
+  },
+  {
+   "kind": "prompt4k",
+   "wall_s": 155.1,
+   "prompt_tokens": 4384,
+   "completion_tokens": 48,
+   "prompt_tok_s": 32.2,
+   "answer_tok_s": 2.6,
+   "draft_n": 46,
+   "draft_accepted": 34,
+   "finish": "length",
+   "glm_stat": "glm stat: decode 390.95 ms/tok (2.56 tok/s) | vram hit 87.61% | ram fetches 0.62/tok | disk 0.00 reads/tok in 0.02 waits/tok, 32.69 ms/tok | promotions 0.65/tok | cpu lane 46.73/tok in 88.80 ms/tok | prompt 31.1 ms/tok | vram 8411/8551 ram 3962/5963",
+   "memory": {
+    "vram_gib": [
+     11.15,
+     11.15
+    ],
+    "strata_rss_gib": 57.86,
+    "ram_used_mib": 3741,
+    "ram_shared_mib": 52603,
+    "ram_available_mib": 7173
+   },
+   "text_head": "Project Maya is a free, open-source engine that runs the 321-billion-parameter GLM-5.3-Flash model locally on consumer GPUs (one to sixteen, plus AMD support), "
+  },
+  {
+   "kind": "after_prompt300",
+   "wall_s": 35.2,
+   "prompt_tokens": 28,
+   "completion_tokens": 300,
+   "prompt_tok_s": 6.3,
+   "answer_tok_s": 10.0,
+   "draft_n": 298,
+   "draft_accepted": 250,
+   "finish": "length",
+   "glm_stat": "glm stat: decode 100.34 ms/tok (9.97 tok/s) | vram hit 90.26% | ram fetches 0.31/tok | disk 0.00 reads/tok in 0.00 waits/tok, 0.00 ms/tok | promotions 0.31/tok | cpu lane 35.75/tok in 93.51 ms/tok | prompt 157.6 ms/tok | vram 8419/8551 ram 3962/5963",
+   "memory": {
+    "vram_gib": [
+     11.15,
+     11.15
+    ],
+    "strata_rss_gib": 57.87,
+    "ram_used_mib": 3744,
+    "ram_shared_mib": 52603,
+    "ram_available_mib": 7168
+   },
+   "text_head": "# How a Four-Stroke Petrol Engine Works\n\nA four-stroke engine completes a full power cycle in four movements of the piston (two crankshaft rotations). Here's ea"
+  }
+ ]
+}

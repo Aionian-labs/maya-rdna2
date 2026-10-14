@@ -1,0 +1,149 @@
+From 727c63d5a47029b8a653b9a6d3486a9dde5e4eb4 Mon Sep 17 00:00:00 2001
+From: Claude Opus 5.5 <noreply@anthropic.com>
+Date: Mon, 12 Oct 2026 03:30:12 +0000
+Subject: [PATCH 3/6] HIP: build without rocWMMA for gfx10xx (RDNA1/RDNA2) and
+ keep F32 prompt attention
+
+rocwmma/config.hpp static_asserts 'Unsupported architecture' for gfx1031, so
+glm_batch.cu did not compile. RDNA2 has no WMMA instructions at all. A build
+whose architecture list contains a gfx10xx target now defines
+STRATA_HIP_NO_WMMA: the rocWMMA include and mla_attn_wmma_kernel are left out,
+mla_attn_path() returns the existing F32 kernel (what STRATA_GLM_MLA_WMMA=0
+already selects), and the rocWMMA half of hip_glm_prefill_attention is skipped.
+No kernel arithmetic is changed.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ cmake/hip_backend.cmake             | 11 +++++++++++
+ src/core/glm_prefill.cu             |  4 ++++
+ src/kernels/cuda/glm_batch.cu       | 12 +++++++++++-
+ tests/hip/glm_prefill_attention.cpp |  4 ++++
+ 4 files changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/cmake/hip_backend.cmake b/cmake/hip_backend.cmake
+index 896b621..ae9a949 100644
+--- a/cmake/hip_backend.cmake
++++ b/cmake/hip_backend.cmake
+@@ -46,6 +46,14 @@ set(CMAKE_HIP_ARCHITECTURES "${_strata_hip_norm}" CACHE STRING "Strata HIP targe
+ # The compiled architectures reach the runtime device check (src/core/device.cu) as "gfx1100,gfx1201": a binary
+ # carried to a card it has no code for stops at startup with a clear message instead of "invalid device function".
+ string(REPLACE ";" "," STRATA_HIP_ARCHS "${STRATA_HIP_ARCH_LIST}")
++# RDNA1 / RDNA2 (gfx10xx) have no WMMA instructions and rocWMMA refuses to compile for them: a build that includes
++# one leaves the rocWMMA prompt-attention kernel out and keeps the F32 kernel.
++set(STRATA_HIP_NO_WMMA OFF)
++foreach(_arch IN LISTS STRATA_HIP_ARCH_LIST)
++  if(_arch MATCHES "^gfx10")
++    set(STRATA_HIP_NO_WMMA ON)
++  endif()
++endforeach()
+ 
+ enable_language(HIP)
+ find_package(hip CONFIG REQUIRED)
+@@ -73,6 +81,9 @@ add_library(strata_hip_runtime INTERFACE)
+ target_include_directories(strata_hip_runtime BEFORE INTERFACE
+   "${STRATA_HIP_COMPAT_INCLUDE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/include")
+ target_compile_definitions(strata_hip_runtime INTERFACE STRATA_USE_HIP=1 "STRATA_HIP_ARCHS=\"${STRATA_HIP_ARCHS}\"")
++if(STRATA_HIP_NO_WMMA)
++  target_compile_definitions(strata_hip_runtime INTERFACE STRATA_HIP_NO_WMMA=1)
++endif()
+ target_link_libraries(strata_hip_runtime INTERFACE hip::host)
+ foreach(_language IN ITEMS CXX HIP)
+   target_compile_options(strata_hip_runtime INTERFACE
+diff --git a/src/core/glm_prefill.cu b/src/core/glm_prefill.cu
+index c4c48a0..889e820 100644
+--- a/src/core/glm_prefill.cu
++++ b/src/core/glm_prefill.cu
+@@ -154,6 +154,9 @@ bool mla_f16_on() {
+ enum class MlaAttnPath { F32, F16Q, WMMA2 };
+ MlaAttnPath mla_attn_path() {
+     if (!mla_wmma_on()) return MlaAttnPath::F32;   // STRATA_GLM_MLA_WMMA=0 keeps the F32 kernel as before
++#if defined(STRATA_HIP_NO_WMMA)
++    return MlaAttnPath::F32;                       // gfx10xx: no WMMA instructions, no rocWMMA kernel in this build
++#else
+     static const char* mode = getenv("STRATA_GLM_PREFILL_ATTN");
+     static const bool want_wmma2 = mode != nullptr && std::strcmp(mode, "wmma2") == 0;
+     static const bool want_f16q = mode != nullptr && std::strcmp(mode, "f16q") == 0;
+@@ -162,6 +165,7 @@ MlaAttnPath mla_attn_path() {
+     if (want_f32) return MlaAttnPath::F32;
+     if (want_wmma2) return gb::mla_wmma2_supported() ? MlaAttnPath::WMMA2 : MlaAttnPath::F16Q;
+     return gb::mla_wmma2_default() ? MlaAttnPath::WMMA2 : MlaAttnPath::F16Q;
++#endif
+ }
+ #endif
+ struct DsaBufs {
+diff --git a/src/kernels/cuda/glm_batch.cu b/src/kernels/cuda/glm_batch.cu
+index 0dfc6b1..8c71e8b 100644
+--- a/src/kernels/cuda/glm_batch.cu
++++ b/src/kernels/cuda/glm_batch.cu
+@@ -4,7 +4,7 @@
+ // (same operation order where the order is observable), so a prompt read in chunks leaves the state the token path
+ // would have left up to float rounding - the projections around them (FP16 tensor-core GEMMs instead of q8_1 dot
+ // products) are where the two paths really differ, as llama.cpp's batched and one-token paths do.
+-#if defined(STRATA_USE_HIP)
++#if defined(STRATA_USE_HIP) && !defined(STRATA_HIP_NO_WMMA)
+ // The HIP bf16/fp8 headers rocWMMA pulls in define the __shfl_*_sync names that the force-included hip_compat macros
+ // remap; hide the macros while they are read.
+ #pragma push_macro("__shfl_xor_sync")
+@@ -1238,6 +1238,7 @@ __global__ void __launch_bounds__(256) mla_attn_mma_kernel(const float* __restri
+ #endif
+ 
+ #if defined(STRATA_USE_HIP)
++#if !defined(STRATA_HIP_NO_WMMA)
+ // mla_attn_tc_kernel on RDNA3 WMMA (rocWMMA).  RDNA allows 64 KiB of LDS a workgroup, the CUDA kernel takes 91,
+ // so Q (FP16, from the q_abs product) stays in registers - each warp holds its 64-wide K slice of the 16 heads as four
+ // A fragments - and the cells go in chunks of 16: O 32 KiB (F32) + L 16 KiB + score partials 8 KiB + P 0.5 KiB.
+@@ -1353,6 +1354,7 @@ __global__ void __launch_bounds__(256) mla_attn_wmma_kernel(const _Float16* __re
+         o[i] = L > 0.0f ? sO[i] / L : 0.0f;
+     }
+ }
++#endif  // !STRATA_HIP_NO_WMMA
+ 
+ using mla2_h16 = _Float16 __attribute__((ext_vector_type(16)));
+ using mla2_f8 = float __attribute__((ext_vector_type(8)));
+@@ -2008,6 +2010,13 @@ void mla_attn(const float* q_abs, const uint16_t* lat, const int* cells, const i
+ #if defined(STRATA_USE_HIP)
+ void mla_attn_f16q(const uint16_t* q16, const uint16_t* lat, const int* cells, const int* n_sel, int n_sel_max,
+                    int n_head, int kv_lora, float scale, int T, float* ctx, cudaStream_t s, bool lat_q8) {
++#if defined(STRATA_HIP_NO_WMMA)
++    (void) q16; (void) lat; (void) cells; (void) n_sel; (void) n_sel_max; (void) n_head; (void) kv_lora;
++    (void) scale; (void) T; (void) ctx; (void) s; (void) lat_q8;
++    std::fprintf(stderr, "glm_batch mla_attn_f16q: this build has no rocWMMA kernel (gfx10xx); use the F32 path
++");
++    std::abort();
++#else
+     if (T <= 0) return;
+     if (kv_lora != 512 || n_head % HW_HG != 0) {
+         std::fprintf(stderr, "glm_batch mla_attn_f16q: kv_lora %d / n_head %d unsupported\n", kv_lora, n_head);
+@@ -2018,6 +2027,7 @@ void mla_attn_f16q(const uint16_t* q16, const uint16_t* lat, const int* cells, c
+     mla_attn_wmma_kernel<<<grid, 256, kHwSmem, s>>>((const _Float16*) q16, lat, cells, n_sel, n_sel_max, n_head, scale, ctx,
+                                                     lat_q8);
+     check("mla_attn_wmma");
++#endif
+ }
+ 
+ bool mla_wmma2_supported() { return mla_wmma2_arch() <= 2; }
+diff --git a/tests/hip/glm_prefill_attention.cpp b/tests/hip/glm_prefill_attention.cpp
+index 7ac27ba..d68d2ca 100644
+--- a/tests/hip/glm_prefill_attention.cpp
++++ b/tests/hip/glm_prefill_attention.cpp
+@@ -115,6 +115,9 @@ int main() {
+     if (worst > 5e-5) return 5;
+ 
+     // The rocWMMA kernel (FP16 Q) against the F32 kernel on the same FP16-rounded Q: random data, many cells
++#if defined(STRATA_HIP_NO_WMMA)
++    std::puts("GLM prefill WMMA attention: skipped (gfx10xx build has no rocWMMA kernel)");
++#else
+     {
+         constexpr int T2 = 48, H2 = 32, rows2 = 2048, stride2 = 700;
+         std::vector<float> q2((size_t) T2 * H2 * KV), lat2((size_t) rows2 * KV), a(q2.size()), b(q2.size());
+@@ -173,6 +176,7 @@ int main() {
+         }
+         hipFree(dq16); hipFree(dq); hipFree(dl); hipFree(da); hipFree(db); hipFree(dc); hipFree(dn);
+     }
++#endif
+ 
+     // The wave32 WMMA kernel (F32 Q, FP16 high/residual) against the F32 kernel: random data, partial 16/32-cell
+     // chunks, masked cells, multiple head groups, and zero/tiny/large queries
+-- 
+2.34.1
+
